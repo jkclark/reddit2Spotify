@@ -4,35 +4,6 @@ import spotify
 import sys
 
 
-class User():
-    def __init__(self, username, scope, credentials_dict):
-        self.username = username
-        self.scope = scope
-        self.credentials_dict = credentials_dict
-
-        self.token = self.requestToken()
-
-    def getUsername(self):
-        return self.username
-
-    def getScope(self):
-        return self.scope
-
-    def getCredentialsDict(self):
-        return self.credentials_dict
-
-    def requestToken(self):
-        token = spotify.get_user_token(
-                    self.username,
-                    self.scope,
-                    self.credentials_dict,
-                )
-        return token
-
-    def getToken(self):
-        return self.token
-
-
 def load_credentials(credentials_pickle_file):
     try:
         with open(credentials_pickle_file, 'rb') as c:
