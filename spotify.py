@@ -1,20 +1,21 @@
 import sys
 import spotipy
 import spotipy.util as util
+import configparser
 
 
 class SpotifyAgent():
-    def __init__(self, username, scope, creds):
+    def __init__(self, username, scope, config_file):
         self.username = username
         self.scope = scope
-        self._client_id = creds["SPOTIPY_CLIENT_ID"]
-        self._client_secret = creds["SPOTIPY_CLIENT_SECRET"]
-        self._redirect_uri = creds["SPOTIPY_REDIRECT_URI"]
+        config = configparser.ConfigParser()
+        config.read(config_file)
+        spot_creds = config["spotify"]
         self.token = util.prompt_for_user_token(username,
                                                 scope,
-                                                self._client_id,
-                                                self._client_secret,
-                                                self._redirect_uri)
+                                                spot_creds["CLIENT_ID"],
+                                                spot_creds["CLIENT_SECRET"],
+                                                spot_creds["REDIRECT_URI"])
         if self.token is None:
             print("Error: Failed to create token.", file=sys.stderr)
 

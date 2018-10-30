@@ -1,36 +1,29 @@
 import praw
-import pickle
 import spotify
 import sys
-
-
-def load_credentials(credentials_pickle_file):
-    try:
-        with open(credentials_pickle_file, 'rb') as c:
-            return pickle.load(c)
-    except IOError:
-        print("Error: Couldn't open credentials file. Exiting.")
+import configparser
 
 
 def main():
-    print("Loading credentials from credentials file...")
-    credentials = load_credentials("reddit_credentials.p")
+    config = configparser.ConfigParser()
+    config_file = "config.ini"
+    config.read(config_file)
+    reddit_creds = config["reddit"]
 
     user_agent = "reddit2Spotify by /u/zelfed"
-    reddit = praw.Reddit(client_id=credentials["CLIENT_ID"],
-                         client_secret=credentials["CLIENT_SECRET"],
-                         password=credentials["PASSWORD"],
+    reddit = praw.Reddit(client_id=reddit_creds["CLIENT_ID"],
+                         client_secret=reddit_creds["CLIENT_SECRET"],
+                         password=reddit_creds["PASSWORD"],
                          user_agent=user_agent,
-                         username=credentials["USERNAME"])
+                         username=reddit_creds["USERNAME"])
 
     print("User:", reddit.user.me())
 
     sp_username = sys.argv[1]
     sp_scope = "playlist-modify-public"
-    sp_credentials = load_credentials("spotify_credentials.p")
     sp_agent = spotify.SpotifyAgent(sp_username,
                                     sp_scope,
-                                    sp_credentials)
+                                    config_file)
 
     # Subreddits to create playlists for
     subreddits = ['edm']

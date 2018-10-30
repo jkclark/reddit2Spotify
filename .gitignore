@@ -1,5 +1,2 @@
 .gitsecret/keys/random_seed
-spotify_credentials.p
-reddit_credentials.p
-spotify_pickle_script.py
-reddit_pickle_script.py
+config.ini
