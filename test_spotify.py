@@ -34,6 +34,7 @@ class SpotifyTestCase(unittest.TestCase):
         self.sp.agent.user_playlist_add_tracks = mock_playlist_snapshot
 
         self.sp.add_songs_to_playlist(["test_track_id_1"], "test_pl_id")
+        assert(mock_playlist_snapshot.call_count > 0)
 
 
 if __name__ == "__main__":
