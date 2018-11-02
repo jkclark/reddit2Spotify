@@ -33,6 +33,7 @@ class SpotifyAgent():
             A playlist object representing the new playlist.
 
         """
+        self.agent.user_playlist_create()
         playlist = self.agent.user_playlist_create(self.username,
                                                    name,
                                                    public,

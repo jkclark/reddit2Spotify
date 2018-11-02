@@ -1,2 +1,4 @@
 .gitsecret/keys/random_seed
 config.ini
+.cache*
+__pycache__
