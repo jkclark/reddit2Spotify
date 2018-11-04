@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>r2s_ui</class>
- <widget class="QMainWindow" name="r2s_ui">
+ <class>single_subreddit</class>
+ <widget class="QMainWindow" name="single_subreddit">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>433</width>
-    <height>332</height>
+    <height>345</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>r2s_ui</string>
+   <string>single_subreddit</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="subreddit_vb">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="post_subreddit_hb">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="pre_subreddit_entry_label">
           <property name="text">
            <string>Pull posts from /r/</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="subreddit_entry_textbox"/>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="post_sorting_hb">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="pre_sorting_label">
           <property name="text">
            <string>Pull</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="sorting_method_combo">
           <item>
            <property name="text">
             <string>top</string>
@@ -70,68 +70,64 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <widget class="QLabel" name="top_time_label">
+          <property name="text">
+           <string>posts from</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="top_time_combo">
           <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>posts from</string>
-            </property>
-           </widget>
+           <property name="text">
+            <string>the past hour</string>
+           </property>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_2">
-            <item>
-             <property name="text">
-              <string>the past hour</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>the past 24 hours</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>the past week</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>the past month</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>the past year</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>all time</string>
-             </property>
-            </item>
-           </widget>
+           <property name="text">
+            <string>the past 24 hours</string>
+           </property>
           </item>
-         </layout>
+          <item>
+           <property name="text">
+            <string>the past week</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>the past month</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>the past year</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>all time</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="post_flair_hb">
         <item>
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="pre_flair_label">
           <property name="text">
            <string>Pull posts with flair text</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_2"/>
+         <widget class="QLineEdit" name="post_flair_textbox"/>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <layout class="QHBoxLayout" name="playlist_hb">
         <property name="sizeConstraint">
          <enum>QLayout::SetMinimumSize</enum>
         </property>
@@ -241,23 +237,23 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
+       <layout class="QHBoxLayout" name="main_buttons_hb">
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="run_now_button">
           <property name="text">
            <string>Run now</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="schedule_button">
           <property name="text">
            <string>Schedule...</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="delete_button">
           <property name="text">
            <string>Delete</string>
           </property>

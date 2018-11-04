@@ -2,7 +2,8 @@ import praw
 import spotify
 import sys
 import configparser
-import gui
+#  import gui
+from PyQt5 import uic
 
 from PyQt5.QtWidgets import (QApplication)
 
@@ -66,12 +67,18 @@ def check_args():
         sys.exit(0)
 
 
+def connector():
+    print("delete button clicked!")
+
+
 def main():
     check_args()
     app = QApplication(sys.argv)
-    r2s = gui.r2sGUI(sys.argv[1])
+    #  r2s = gui.r2sGUI(sys.argv[1])
+    ss = uic.loadUi("single_subreddit.ui")
+    ss.delete_button.clicked.connect(connector)
 
-    r2s.show()
+    ss.show()
     sys.exit(app.exec_())
 
 
