@@ -2,15 +2,19 @@ import praw
 import spotify
 import sys
 import configparser
+import gui
+
+from PyQt5.QtWidgets import (QApplication)
 
 
-def main():
+def tester():
     if len(sys.argv) < 2:
         print("Usage: main.py username", file=sys.stderr)
         exit(0)
 
     config = configparser.ConfigParser()
     config_file = "config.ini"
+    # TODO: Change read to read_file for required config file
     config.read(config_file)
     reddit_creds = config["reddit"]
 
@@ -36,7 +40,8 @@ def main():
     for subreddit in subreddits:
         # Create playlist
         playlist_name = f"TEST - r/{subreddit}"
-        playlist_desc = f"Top posts on /r/{subreddit} from the past {time_period}"
+        playlist_desc = f"Top posts on /r/{subreddit} from the past\
+                         {time_period}"
         playlist = sp_agent.create_playlist(playlist_name, playlist_desc)
         playlist_id = playlist["id"]
 
@@ -54,5 +59,22 @@ def main():
                 sp_agent.add_songs_to_playlist([valid_part], playlist_id)
 
 
+def check_args():
+    if len(sys.argv) < 2:
+        usage = "Usage: reddit2spotify username"
+        print(usage)
+        sys.exit(0)
+
+
+def main():
+    check_args()
+    app = QApplication(sys.argv)
+    r2s = gui.r2sGUI(sys.argv[1])
+
+    r2s.show()
+    sys.exit(app.exec_())
+
+
 if __name__ == "__main__":
+    #  tester()
     main()
