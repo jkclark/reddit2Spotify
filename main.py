@@ -2,9 +2,8 @@ import praw
 import spotify
 import sys
 import configparser
-#  import gui
-from PyQt5 import uic
-
+import gui
+#  from PyQt5 import uic
 from PyQt5.QtWidgets import (QApplication)
 
 
@@ -74,11 +73,12 @@ def connector():
 def main():
     check_args()
     app = QApplication(sys.argv)
-    #  r2s = gui.r2sGUI(sys.argv[1])
-    ss = uic.loadUi("single_subreddit.ui")
-    ss.delete_button.clicked.connect(connector)
+    r2s = gui.r2sGUI(sys.argv[1])
+    #  ss = uic.loadUi("single_subreddit.ui")
+    #  ss.delete_button.clicked.connect(connector)
 
-    ss.show()
+    #  ss.show()
+    r2s.show()
     sys.exit(app.exec_())
 
 
