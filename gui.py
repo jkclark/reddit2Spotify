@@ -14,13 +14,13 @@ class r2sGUI(QWidget):
         self.mvb = QVBoxLayout()
         self.subreddit_count = 0
         self.config = None
+        self.settings_file = f"{self.username}.ini"
         self.initialize_UI()
 
     def initialize_UI(self):
         config = configparser.ConfigParser()
-        settings_file_name = f"{self.username}.ini"
-        if os.path.isfile(settings_file_name):
-            config.read(settings_file_name)
+        if os.path.isfile(self.settings_file):
+            config.read(self.settings_file)
             self.config = config
             # Should probably check that config file is valid (not corrupted)
 
@@ -31,6 +31,11 @@ class r2sGUI(QWidget):
                 subreddit_box = self.load_subreddit(config[section])
                 self.mvb.addWidget(subreddit_box)
                 self.subreddit_count += 1
+
+        add_widget = uic.loadUi("addsubreddit.ui")
+        add_subreddit_button = add_widget.add_subreddit_button
+        add_subreddit_button.clicked.connect(self.create_new_subreddit)
+        self.mvb.addWidget(add_widget)
 
         self.setLayout(self.mvb)
         self.setWindowTitle("reddit2Spotify")
@@ -48,12 +53,84 @@ class r2sGUI(QWidget):
         ss.subreddit_entry_textbox.setText(section["name"])
 
         # sorting method dropdown
+        # only show time sorting if "top" is selected
+        def time_lambda(): self.allow_time(ss.sorting_method_combo,
+                                           [ss.pre_top_time_label,
+                                            ss.top_time_combo])
+        ss.sorting_method_combo.currentIndexChanged.connect(time_lambda)
         index = ss.sorting_method_combo.findText(section["sorting method"],
                                                  QtCore.Qt.MatchFixedString)
         if index >= 0:
             ss.sorting_method_combo.setCurrentIndex(index)
 
+        # flair text
+        ss.post_flair_textbox.setText(section["flair text"])
+        ss.post_flair_textbox.setPlaceholderText("Leave blank for all posts")
+
+        # new and existing playlist radio buttons
+        def playlist_radio_toggled(): self.playlist_radio_toggled(ss)
+        ss.new_pl_radio.toggled.connect(playlist_radio_toggled)
+        ss.existing_pl_radio.toggled.connect(playlist_radio_toggled)
+        pl_type = section["playlist type"]
+        ss.new_pl_radio.setChecked(pl_type == "new")
+        ss.existing_pl_radio.setChecked(pl_type == "existing")
+
+        # save button
+        def save_button_clicked(): self.save_subreddit(ss)
+        ss.save_button.clicked.connect(save_button_clicked)
+
         return ss
 
+    @QtCore.pyqtSlot(object, list)
+    def allow_time(self, sorting, to_be_hidden):
+        if sorting.currentIndex() == 0:
+            #  time_hb.show()
+            for widget in to_be_hidden:
+                widget.show()
+        else:
+            #  time.setEnabled(False)
+            for widget in to_be_hidden:
+                widget.hide()
+
+    @QtCore.pyqtSlot(QWidget)
+    def playlist_radio_toggled(self, ss):
+        if ss.new_pl_radio.isChecked():  # new
+            # hide existing playlist stuff
+            ss.existing_pl_id_label.hide()
+            ss.existing_pl_id_textbox.hide()
+            # show new playlist stuff
+            ss.new_pl_name_label.show()
+            ss.new_pl_name_textbox.show()
+            ss.new_pl_desc_label.show()
+            ss.new_pl_desc_textbox.show()
+        else:  # existing
+            # show existing playlist stuff
+            ss.existing_pl_id_label.show()
+            ss.existing_pl_id_textbox.show()
+            # hide new playlist stuff
+            ss.new_pl_name_label.hide()
+            ss.new_pl_name_textbox.hide()
+            ss.new_pl_desc_label.hide()
+            ss.new_pl_desc_textbox.hide()
+
     def create_new_subreddit(self):
-        pass
+        print("Creating new subreddit...")
+
+    @QtCore.pyqtSlot(QWidget)
+    def save_subreddit(self, ss):
+        section = ss.subreddit_entry_textbox.text().lower()
+        print("section = %s" % section)
+        cf = self.config
+        cf.read(self.settings_file)
+
+        try:
+            cf.add_section(section)
+        except configparser.DuplicateSectionError:
+            pass
+
+        cf[section]["name"] = section
+        print(ss.sorting_method_combo.currentText())
+        cf[section]["sorting method"] = ss.sorting_method_combo.currentText()
+
+        with open(self.settings_file, 'w') as configfile:
+            cf.write(configfile)

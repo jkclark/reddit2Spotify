@@ -1,280 +1,286 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SingleSubreddit</class>
+ <class>single_subreddit</class>
  <widget class="QWidget" name="single_subreddit">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>433</width>
-    <height>345</height>
+    <width>407</width>
+    <height>281</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>single_subreddit</string>
   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="subreddit_vb">
-      <item>
-       <layout class="QHBoxLayout" name="post_subreddit_hb">
-        <item>
-         <widget class="QLabel" name="pre_subreddit_entry_label">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="subreddit_vb" stretch="0,0,0,0,0,0">
+     <item>
+      <layout class="QHBoxLayout" name="post_subreddit_hb">
+       <item>
+        <widget class="QLabel" name="pre_subreddit_entry_label">
+         <property name="text">
+          <string>Pull posts from /r/</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="subreddit_entry_textbox"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="post_sorting_hb">
+       <item>
+        <widget class="QLabel" name="pre_sorting_label">
+         <property name="text">
+          <string>Pull</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="sorting_method_combo">
+         <item>
           <property name="text">
-           <string>Pull posts from /r/</string>
+           <string>top</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="subreddit_entry_textbox"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="post_sorting_hb">
-        <item>
-         <widget class="QLabel" name="pre_sorting_label">
+         </item>
+         <item>
           <property name="text">
-           <string>Pull</string>
+           <string>hot</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="sorting_method_combo">
-          <item>
-           <property name="text">
-            <string>top</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>hot</string>
-           </property> </item> <item>
-           <property name="text">
-            <string>new</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>rising</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>controversial</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="top_time_label">
+         </item>
+         <item>
           <property name="text">
-           <string>posts from</string>
+           <string>new</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="top_time_combo">
-          <item>
-           <property name="text">
-            <string>the past hour</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>the past 24 hours</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>the past week</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>the past month</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>the past year</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>all time</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="post_flair_hb">
-        <item>
-         <widget class="QLabel" name="pre_flair_label">
+         </item>
+         <item>
           <property name="text">
-           <string>Pull posts with flair text</string>
+           <string>rising</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="post_flair_textbox"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="playlist_hb">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMinimumSize</enum>
-        </property>
-        <item>
-         <layout class="QVBoxLayout" name="new_pl_vb">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinimumSize</enum>
-          </property>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
-            <item alignment="Qt::AlignHCenter">
-             <widget class="QLabel" name="new_pl_label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>New playlist</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="new_pl_name_hb">
-            <item>
-             <widget class="QLabel" name="new_pl_name_label">
-              <property name="text">
-               <string>Name:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="new_pl_name_textbox"/>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <item>
-             <widget class="QLabel" name="new_pl_desc_label">
-              <property name="text">
-               <string>Description:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="new_pl_desc_textbox"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="existing_pl_vb">
-          <property name="sizeConstraint">
-           <enum>QLayout::SetMinimumSize</enum>
-          </property>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
-            <item alignment="Qt::AlignHCenter">
-             <widget class="QLabel" name="existing_pl_label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Existing playlist</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="existing_pl_id_hb">
-            <item>
-             <widget class="QLabel" name="existing_pl_id_label">
-              <property name="text">
-               <string>ID:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="existing_pl_id_textbox"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="main_buttons_hb">
-        <item>
-         <widget class="QPushButton" name="run_now_button">
+         </item>
+         <item>
           <property name="text">
-           <string>Run now</string>
+           <string>controversial</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="schedule_button">
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="post_sorting_label">
+         <property name="text">
+          <string>posts</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="pre_top_time_label">
+         <property name="text">
+          <string>from</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="top_time_combo">
+         <item>
           <property name="text">
-           <string>Schedule...</string>
+           <string>the past hour</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="delete_button">
+         </item>
+         <item>
           <property name="text">
-           <string>Delete</string>
+           <string>the past 24 hours</string>
           </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="lineWidth">
-         <number>40</number>
-        </property>
-        <property name="midLineWidth">
-         <number>40</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
+         </item>
+         <item>
+          <property name="text">
+           <string>the past week</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>the past month</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>the past year</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>all time</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="post_flair_hb">
+       <item>
+        <widget class="QLabel" name="pre_flair_label">
+         <property name="text">
+          <string>Pull posts with flair text:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="post_flair_textbox"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetDefaultConstraint</enum>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="new_pl_radio">
+           <property name="text">
+            <string>New Playlist</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="existing_pl_radio">
+           <property name="text">
+            <string>Existing Playlist</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <layout class="QVBoxLayout" name="new_playlist_vb">
+           <item>
+            <layout class="QHBoxLayout" name="new_pl_name_hb">
+             <item>
+              <widget class="QLabel" name="new_pl_name_label">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Name:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="new_pl_name_textbox"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="new_pl_desc_hb">
+             <item>
+              <widget class="QLabel" name="new_pl_desc_label">
+               <property name="text">
+                <string>Description:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="new_pl_desc_textbox"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="existing_playlist_vb">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QLabel" name="existing_pl_id_label">
+               <property name="text">
+                <string>ID:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="existing_pl_id_textbox"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="main_buttons_hb">
+       <item>
+        <widget class="QPushButton" name="save_button">
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="run_now_button">
+         <property name="text">
+          <string>Run now</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="schedule_button">
+         <property name="text">
+          <string>Schedule...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="delete_button">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: red</string>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="styleSheet">
+        <string notr="true">background-color: green</string>
+       </property>
+       <property name="lineWidth">
+        <number>40</number>
+       </property>
+       <property name="midLineWidth">
+        <number>40</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
