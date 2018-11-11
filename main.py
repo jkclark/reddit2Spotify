@@ -50,7 +50,8 @@ def tester():
 
         # dir(object) returns a list of attributes for object
         for post in subreddit.top(time_period):
-            is_new = (post.link_flair_text == "New")
+            #  is_new = (post.link_flair_text == "New")
+            is_new = (post.link_flair_text == "new")
             is_spotify = ("spotify" in post.url)
             is_track = ("track" in post.url)
             if is_new and is_spotify and is_track:
