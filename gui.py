@@ -52,6 +52,7 @@ class r2sGUI(QWidget):
     def display_no_reddits(self):
         no_subreddits_message = f"No subreddits added for {self.username}."
         no_subreddits = QLabel(no_subreddits_message)
+        no_subreddits.setObjectName("no_subreddits_label")
         self.mvb.addWidget(no_subreddits)
 
     def load_subreddit(self, section):
@@ -130,8 +131,12 @@ class r2sGUI(QWidget):
     def create_new_subreddit(self):
         print("Creating new subreddit...")
         # remove add button
-        count = self.mvb.count()
-        add_button = self.mvb.takeAt(count-1).widget()
+        add_button = self.mvb.takeAt(self.mvb.count()-1).widget()
+
+        # remove "no subreddit" label if there are currently no subreddits
+        if self.subreddit_count == 0:
+            no_subreddit_label = self.mvb.takeAt(self.mvb.count()-1).widget()
+            sip.delete(no_subreddit_label)
 
         # add new subreddit
         new_subreddit = self.load_subreddit(self.config["DEFAULT"])
@@ -166,11 +171,19 @@ class r2sGUI(QWidget):
 
     @QtCore.pyqtSlot(QWidget)
     def delete_subreddit(self, ss):
-        print("deleting subreddit...")
+        print("Deleting subreddit...")
         self.mvb.removeWidget(ss)
         self.remove_subreddit_from_settings(ss)
         sip.delete(ss)  # honestly have no clue what this is but it works
         self.subreddit_count -= 1
+
+        # add "no subreddits" label if we just deleted the last subreddit
+        if self.subreddit_count == 0:
+            add_button = self.mvb.takeAt(self.mvb.count()-1).widget()
+            self.display_no_reddits()
+            self.mvb.addWidget(add_button)
+
+        self.resize_after_subreddit_count_change()
         self.resize_after_subreddit_count_change()
 
     def remove_subreddit_from_settings(self, ss):
