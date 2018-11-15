@@ -10,13 +10,14 @@ from PyQt5 import uic, QtCore
 
 
 class r2sGUI(QWidget):
-    def __init__(self, spotify_username):
+    def __init__(self, sp_agent, reddit):
         super().__init__()
-        self.username = spotify_username
+        self.sp_agent = sp_agent
+        self.reddit = reddit
         self.mvb = QVBoxLayout()
         self.subreddit_count = 0
         self.config = None
-        self.settings_file = f"{self.username}.ini"
+        self.settings_file = f"{self.sp_agent.username}.ini"
         self.initialize_UI()
 
     def initialize_UI(self):
@@ -45,13 +46,16 @@ class r2sGUI(QWidget):
         self.setWindowTitle("reddit2Spotify")
 
     def resize_after_subreddit_count_change(self):
-        height = self.mvb.sizeHint().height()
-        width = self.width()
-        self.resize(width, height)
+        #  height = self.mvb.sizeHint().height()
+        #  print("hinted height = ", height)
+        #  width = self.width()
+        self.resize(self.sizeHint())
+        # this is currently not working
 
     def display_no_reddits(self):
-        no_subreddits_message = f"No subreddits added for {self.username}."
-        no_subreddits = QLabel(no_subreddits_message)
+        # no_subreddits_m --> no_subreddits_message
+        no_subreddits_m = f"No subreddits added for {self.sp_agent.username}."
+        no_subreddits = QLabel(no_subreddits_m)
         no_subreddits.setObjectName("no_subreddits_label")
         self.mvb.addWidget(no_subreddits)
 
@@ -93,6 +97,14 @@ class r2sGUI(QWidget):
         # delete button
         def delete_button_clicked(): self.delete_subreddit(ss)
         ss.delete_button.clicked.connect(delete_button_clicked)
+
+        # run button
+        def run_button_clicked(): self.run_now(ss)
+        ss.run_now_button.clicked.connect(run_button_clicked)
+
+        # schedule button
+        def schedule_button_clicked(): self.schedule(ss)
+        ss.schedule_button.clicked.connect(schedule_button_clicked)
 
         return ss
 
@@ -195,3 +207,23 @@ class r2sGUI(QWidget):
             print(f"Error deleting section {section}.", file=sys.stderr)
         with open(self.settings_file, 'w') as configfile:
             cf.write(configfile)
+
+    def run_now(self, ss):
+        print("Running subreddit settings now...")
+        self.save_subreddit(ss)
+        playlist_id = None
+        if ss.new_pl_radio.isChecked():  # new
+            pl_name = ss.new_pl_name_texbox.text()
+            pl_desc = ss.new_pl_desc_textbox.text()
+            playlist = self.sp_agent.create_playlist(pl_name, pl_desc)
+            playlist_id = playlist["id"]
+        else:  # existing playlist
+            playlist_id = ss.existing_pl_id_textbox.text()
+        print("Playlist ID:", playlist_id)
+
+        #
+        # move this function over to main.py
+        #
+
+    def schedule(self, ss):
+        print("Scheduling subreddit settings now...")

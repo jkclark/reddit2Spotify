@@ -67,16 +67,35 @@ def check_args():
         sys.exit(0)
 
 
-def connector():
-    print("delete button clicked!")
+def create_reddit_instance(config_file):
+    config = configparser.ConfigParser()
+    # TODO: Change read to read_file for required config file
+    config.read(config_file)
+    reddit_creds = config["reddit"]
+
+    user_agent = "reddit2Spotify by /u/zelfed"
+    reddit = praw.Reddit(client_id=reddit_creds["CLIENT_ID"],
+                         client_secret=reddit_creds["CLIENT_SECRET"],
+                         password=reddit_creds["PASSWORD"],
+                         user_agent=user_agent,
+                         username=reddit_creds["USERNAME"])
+
+    print("User:", reddit.user.me())
+    return reddit
 
 
 def main():
     check_args()
+
+    config_file = "config.ini"  # have to change this
+    sp_agent = spotify.SpotifyAgent(sys.argv[1],
+                                    "playlist-modify-public",
+                                    config_file)
+
+    reddit = create_reddit_instance("config.ini")
+
     app = QApplication(sys.argv)
-    r2s = gui.r2sGUI(sys.argv[1])
-    #  ss = uic.loadUi("single_subreddit.ui")
-    #  ss.delete_button.clicked.connect(connector)
+    r2s = gui.r2sGUI(sp_agent, reddit)
 
     #  ss.show()
     r2s.show()
