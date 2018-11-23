@@ -86,6 +86,7 @@ def create_reddit_instance(config_file):
 
 def main():
     check_args()
+    print("hello")
 
     config_file = "config.ini"  # have to change this
     sp_agent = spotify.SpotifyAgent(sys.argv[1],

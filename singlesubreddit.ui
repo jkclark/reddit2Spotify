@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>407</width>
-    <height>281</height>
+    <height>296</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -82,14 +82,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="pre_top_time_label">
+        <widget class="QLabel" name="pre_time_label">
          <property name="text">
           <string>from</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="top_time_combo">
+        <widget class="QComboBox" name="time_combo">
          <item>
           <property name="text">
            <string>the past hour</string>
@@ -226,14 +226,13 @@
      <item>
       <layout class="QHBoxLayout" name="main_buttons_hb">
        <item>
-        <widget class="QPushButton" name="save_button">
-         <property name="text">
-          <string>Save</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="run_now_button">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>Run now</string>
          </property>
@@ -262,20 +261,15 @@
       </layout>
      </item>
      <item>
-      <widget class="Line" name="line">
-       <property name="styleSheet">
-        <string notr="true">background-color: green</string>
-       </property>
-       <property name="lineWidth">
-        <number>40</number>
-       </property>
-       <property name="midLineWidth">
-        <number>40</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="console_hb">
+       <item>
+        <widget class="QLabel" name="console_status_label">
+         <property name="text">
+          <string>Status: Ready</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

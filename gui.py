@@ -18,6 +18,7 @@ class r2sGUI(QWidget):
         self.subreddit_count = 0
         self.config = None
         self.settings_file = f"{self.sp_agent.username}.ini"
+        self.time_dictionary = self.create_time_dictionary()
         self.initialize_UI()
 
     def initialize_UI(self):
@@ -49,12 +50,16 @@ class r2sGUI(QWidget):
         #  height = self.mvb.sizeHint().height()
         #  print("hinted height = ", height)
         #  width = self.width()
-        self.resize(self.sizeHint())
-        # this is currently not working
+        #  self.resize(self.sizeHint())
+        height = self.size().height()
+        width = self.size().width()
+        self.resize(height + 1, width + 1)
+        self.resize(height, width)
 
     def display_no_reddits(self):
         # no_subreddits_m --> no_subreddits_message
-        no_subreddits_m = f"No subreddits added for {self.sp_agent.username}."
+        username = self.sp_agent.username
+        no_subreddits_m = f"No subreddits added for {username}."
         no_subreddits = QLabel(no_subreddits_m)
         no_subreddits.setObjectName("no_subreddits_label")
         self.mvb.addWidget(no_subreddits)
@@ -69,8 +74,8 @@ class r2sGUI(QWidget):
         # sorting method dropdown
         # only show time sorting if "top" is selected
         def time_lambda(): self.allow_time(ss.sorting_method_combo,
-                                           [ss.pre_top_time_label,
-                                            ss.top_time_combo])
+                                           [ss.pre_time_label,
+                                            ss.time_combo])
         ss.sorting_method_combo.currentIndexChanged.connect(time_lambda)
         index = ss.sorting_method_combo.findText(section["sorting method"],
                                                  QtCore.Qt.MatchFixedString)
@@ -91,8 +96,8 @@ class r2sGUI(QWidget):
         ss.existing_pl_radio.setChecked(pl_type == "existing")
 
         # save button
-        def save_button_clicked(): self.save_subreddit(ss)
-        ss.save_button.clicked.connect(save_button_clicked)
+        #  def save_button_clicked(): self.save_subreddit(ss)
+        #  ss.save_button.clicked.connect(save_button_clicked)
 
         # delete button
         def delete_button_clicked(): self.delete_subreddit(ss)
@@ -110,7 +115,8 @@ class r2sGUI(QWidget):
 
     @QtCore.pyqtSlot(object, list)
     def allow_time(self, sorting, to_be_hidden):
-        if sorting.currentIndex() == 0:
+        index = sorting.currentIndex()
+        if index == 0 or index == 4:
             #  time_hb.show()
             for widget in to_be_hidden:
                 widget.show()
@@ -162,6 +168,9 @@ class r2sGUI(QWidget):
     @QtCore.pyqtSlot(QWidget)
     def save_subreddit(self, ss):
         section = ss.subreddit_entry_textbox.text().lower()
+        if not section:  # no subreddit name
+            return
+
         cf = self.config
         cf.read(self.settings_file)
 
@@ -173,7 +182,7 @@ class r2sGUI(QWidget):
         cf[section]["name"] = section
         cf[section]["sorting method"] = ss.sorting_method_combo.currentText()
         # saves top time period even if not sorting by top
-        cf[section]["top time period"] = ss.top_time_combo.currentText()
+        cf[section]["top time period"] = ss.time_combo.currentText()
         cf[section]["flair text"] = ss.post_flair_textbox.text()
         pl_type = "new" if ss.new_pl_radio.isChecked() else "existing"
         cf[section]["playlist type"] = pl_type
@@ -210,10 +219,21 @@ class r2sGUI(QWidget):
 
     def run_now(self, ss):
         print("Running subreddit settings now...")
+        print("current flair text settings:", ss.post_flair_textbox.text())
+
+        subreddit_name = ss.subreddit_entry_textbox.text()
+        if not subreddit_name:
+            ss.console_status_label.setText("Error: No subreddit name")
+            self.resize_after_subreddit_count_change()
+            return
+        subreddit = self.reddit.subreddit(subreddit_name)
+
         self.save_subreddit(ss)
         playlist_id = None
         if ss.new_pl_radio.isChecked():  # new
-            pl_name = ss.new_pl_name_texbox.text()
+            pl_name = ss.new_pl_name_textbox.text()
+            if not pl_name:  # no name given for new playlist
+                pl_name = "r2s playlist for " + self.sp_agent.username
             pl_desc = ss.new_pl_desc_textbox.text()
             playlist = self.sp_agent.create_playlist(pl_name, pl_desc)
             playlist_id = playlist["id"]
@@ -221,9 +241,52 @@ class r2sGUI(QWidget):
             playlist_id = ss.existing_pl_id_textbox.text()
         print("Playlist ID:", playlist_id)
 
-        #
-        # move this function over to main.py
-        #
+        fetching_message = f"Fetching posts..."
+        ss.console_status_label.setText(fetching_message)
+
+        sorting_method = ss.sorting_method_combo.currentText()
+        time = self.time_dictionary[ss.time_combo.currentText()]
+        posts = self.get_posts(subreddit, sorting_method, time)
+
+        for post in posts:
+            matches_flair_text = True
+            flair = ss.post_flair_textbox.text()
+            if flair:
+                if post.link_flair_text != flair:
+                    matches_flair_text = False
+
+            is_spotify = ("spotify" in post.url)
+            is_track = ("track" in post.url)
+            if matches_flair_text and is_spotify and is_track:
+                valid_part = post.url.split('?')[0]
+                ss.console_status_label.setText(f"Adding {valid_part}")
+                self.sp_agent.add_songs_to_playlist([valid_part], playlist_id)
+
+        ss.console_status_label.setText("Ready")
+
+    def create_time_dictionary(self):
+        return {"the past hour": "hour",
+                "the past 24 hours": "day",
+                "the past week": "week",
+                "the past month": "month",
+                "the past year": "year",
+                "all time": "all"}
+
+    # I feel like this function should exist in another module
+    def get_posts(self, subreddit, sorting_method, time):
+        if sorting_method == "top":
+            return subreddit.top(time)
+        elif sorting_method == "hot":
+            return subreddit.hot()
+        elif sorting_method == "new":
+            return subreddit.new()
+        elif sorting_method == "rising":
+            return subreddit.rising()
+        elif sorting_method == "controversial":
+            return subreddit.controversial(time)
+        else:
+            print("Error: Invalid sorting method.", file=sys.stderr)
+            pass
 
     def schedule(self, ss):
         print("Scheduling subreddit settings now...")
