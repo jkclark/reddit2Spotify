@@ -263,9 +263,9 @@
      <item>
       <layout class="QHBoxLayout" name="console_hb">
        <item>
-        <widget class="QLabel" name="console_status_label">
+        <widget class="CustomConsole" name="console">
          <property name="text">
-          <string>Status: Ready</string>
+          <string>Console: Ready</string>
          </property>
         </widget>
        </item>
@@ -276,6 +276,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>CustomConsole</class>
+   <extends>QLabel</extends>
+   <header>custom_console</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

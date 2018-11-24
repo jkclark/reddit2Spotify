@@ -10,10 +10,11 @@ from PyQt5 import uic, QtCore
 
 
 class r2sGUI(QWidget):
-    def __init__(self, sp_agent, reddit):
+    def __init__(self, sp_agent, reddit, redraw_func):
         super().__init__()
         self.sp_agent = sp_agent
         self.reddit = reddit
+        self.redraw_func = redraw_func
         self.mvb = QVBoxLayout()
         self.subreddit_count = 0
         self.config = None
@@ -48,16 +49,13 @@ class r2sGUI(QWidget):
 
     def resize_after_subreddit_count_change(self):
         #  height = self.mvb.sizeHint().height()
-        #  print("hinted height = ", height)
-        #  width = self.width()
-        #  self.resize(self.sizeHint())
-        height = self.size().height()
-        width = self.size().width()
-        self.resize(height + 1, width + 1)
-        self.resize(height, width)
+        #  width = self.mvb.sizeHint().width()
+        #  self.resize(height + 1, width + 1)  # attempt to update label
+        #  self.resize(height, width)
+        pass
 
     def display_no_reddits(self):
-        # no_subreddits_m --> no_subreddits_message
+        # no_subreddits_m means no_subreddits_message
         username = self.sp_agent.username
         no_subreddits_m = f"No subreddits added for {username}."
         no_subreddits = QLabel(no_subreddits_m)
@@ -110,6 +108,8 @@ class r2sGUI(QWidget):
         # schedule button
         def schedule_button_clicked(): self.schedule(ss)
         ss.schedule_button.clicked.connect(schedule_button_clicked)
+
+        ss.console.text_changed.connect(self.redraw_func)
 
         return ss
 
@@ -219,11 +219,13 @@ class r2sGUI(QWidget):
 
     def run_now(self, ss):
         print("Running subreddit settings now...")
-        print("current flair text settings:", ss.post_flair_textbox.text())
 
         subreddit_name = ss.subreddit_entry_textbox.text()
         if not subreddit_name:
-            ss.console_status_label.setText("Error: No subreddit name")
+            # first one doesn't update UI, do it twice
+            # not a great solution, but works for now
+            ss.console.change_text("Error: No subreddit name", 1)
+            ss.console.change_text("Error: No subreddit name", 1)
             self.resize_after_subreddit_count_change()
             return
         subreddit = self.reddit.subreddit(subreddit_name)
@@ -242,7 +244,7 @@ class r2sGUI(QWidget):
         print("Playlist ID:", playlist_id)
 
         fetching_message = f"Fetching posts..."
-        ss.console_status_label.setText(fetching_message)
+        ss.console.change_text(fetching_message, 0)
 
         sorting_method = ss.sorting_method_combo.currentText()
         time = self.time_dictionary[ss.time_combo.currentText()]
@@ -259,10 +261,12 @@ class r2sGUI(QWidget):
             is_track = ("track" in post.url)
             if matches_flair_text and is_spotify and is_track:
                 valid_part = post.url.split('?')[0]
-                ss.console_status_label.setText(f"Adding {valid_part}")
+                ss.console.change_text(f"Adding {valid_part}", 0)
                 self.sp_agent.add_songs_to_playlist([valid_part], playlist_id)
 
-        ss.console_status_label.setText("Ready")
+        # same as above, doing it twice so it updates UI
+        ss.console.change_text("Ready", 0)
+        ss.console.change_text("Ready", 0)
 
     def create_time_dictionary(self):
         return {"the past hour": "hour",

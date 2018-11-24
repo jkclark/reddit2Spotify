@@ -3,8 +3,9 @@ import spotify
 import sys
 import configparser
 import gui
-#  from PyQt5 import uic
 from PyQt5.QtWidgets import (QApplication)
+from PyQt5.QtCore import pyqtSlot
+#  import custom_console as cc
 
 
 def tester():
@@ -84,6 +85,12 @@ def create_reddit_instance(config_file):
     return reddit
 
 
+# update label by redrawing after text changes
+@pyqtSlot()
+def redraw(app):
+    app.processEvents()
+
+
 def main():
     check_args()
     print("hello")
@@ -96,7 +103,9 @@ def main():
     reddit = create_reddit_instance("config.ini")
 
     app = QApplication(sys.argv)
-    r2s = gui.r2sGUI(sp_agent, reddit)
+
+    def redraw_func(): redraw(app)
+    r2s = gui.r2sGUI(sp_agent, reddit, redraw_func)
 
     #  ss.show()
     r2s.show()
