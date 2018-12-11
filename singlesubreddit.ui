@@ -21,7 +21,38 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="subreddit_vb" stretch="0,0,0,0,0,0">
+    <layout class="QVBoxLayout" name="subreddit_vb" stretch="0,0,0,0,0,0,0">
+     <item>
+      <layout class="QHBoxLayout" name="spotify_hb">
+       <item>
+        <widget class="QLabel" name="spotify_logo_label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>&lt;logo&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="username_label">
+         <property name="text">
+          <string>Username</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="log_in_log_out_button">
+         <property name="text">
+          <string>Log out</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
      <item>
       <layout class="QHBoxLayout" name="post_subreddit_hb">
        <item>

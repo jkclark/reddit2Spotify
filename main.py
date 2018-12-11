@@ -2,7 +2,7 @@ import praw
 import spotify
 import sys
 import configparser
-import gui
+import gui_simple  # used to be gui
 from PyQt5.QtWidgets import (QApplication)
 from PyQt5.QtCore import pyqtSlot
 #  import custom_console as cc
@@ -105,7 +105,7 @@ def main():
     app = QApplication(sys.argv)
 
     def redraw_func(): redraw(app)
-    r2s = gui.r2sGUI(sp_agent, reddit, redraw_func)
+    r2s = gui_simple.r2sGUI(sp_agent, reddit, redraw_func)
 
     #  ss.show()
     r2s.show()
