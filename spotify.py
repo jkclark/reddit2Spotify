@@ -1,7 +1,7 @@
-import sys
+import configparser
 import spotipy
 import spotipy.util as util
-import configparser
+import sys
 
 
 class SpotifyAgent():
